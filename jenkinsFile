@@ -14,6 +14,23 @@ pipeline {
                 echo 'Run unit tests using JUnit'
                 echo 'Run integration tests using JUnit'
             }
+            post {
+                always {
+                    emailext(
+                        to: 'malshansasindu502@gmail.com',
+                        subject: "Jenkins - Unit and Integration Tests - ${currentBuild.currentResult}",
+                        body: """Unit and Integration Tests stage completed.
+
+Job: ${env.JOB_NAME}
+Build Number: ${env.BUILD_NUMBER}
+Stage: Unit and Integration Tests
+Status: ${currentBuild.currentResult}
+
+The Jenkins build log is attached to this email.""",
+                        attachLog: true
+                    )
+                }
+            }
         }
 
         stage('Code Analysis') {
@@ -26,6 +43,23 @@ pipeline {
             steps {
                 echo 'Scan the code for vulnerabilities using OWASP Dependency-Check'
             }
+            post {
+                always {
+                    emailext(
+                        to: 'malshansasindu502@gmail.com',
+                        subject: "Jenkins - Security Scan - ${currentBuild.currentResult}",
+                        body: """Security Scan stage completed.
+
+Job: ${env.JOB_NAME}
+Build Number: ${env.BUILD_NUMBER}
+Stage: Security Scan
+Status: ${currentBuild.currentResult}
+
+The Jenkins build log is attached to this email.""",
+                        attachLog: true
+                    )
+                }
+            }
         }
 
         stage('Deploy to Staging') {
@@ -37,6 +71,23 @@ pipeline {
         stage('Integration Tests on Staging') {
             steps {
                 echo 'Run integration tests on the staging environment using JUnit'
+            }
+            post {
+                always {
+                    emailext(
+                        to: 'malshansasindu502@gmail.com',
+                        subject: "Jenkins - Integration Tests on Staging - ${currentBuild.currentResult}",
+                        body: """Integration Tests on Staging stage completed.
+
+Job: ${env.JOB_NAME}
+Build Number: ${env.BUILD_NUMBER}
+Stage: Integration Tests on Staging
+Status: ${currentBuild.currentResult}
+
+The Jenkins build log is attached to this email.""",
+                        attachLog: true
+                    )
+                }
             }
         }
 
