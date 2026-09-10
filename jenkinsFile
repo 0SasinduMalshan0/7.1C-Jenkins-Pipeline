@@ -1,46 +1,49 @@
 pipeline {
     agent any
 
-    environment {
-        DIRECTORY_PATH = 'C:/sit223/task-7.1C/code'
-        TESTING_ENVIRONMENT = 'Testing-env-of-task-6.1P'
-        PRODUCTION_ENVIRONMENT = 'Sasindu Malshan'
-    }
-
     stages {
+
         stage('Build') {
             steps {
-                echo "Fetch the source code from the directory path specified by the environment variable: ${DIRECTORY_PATH}"
-                echo "Compile the code and generate any necessary artefacts"
+                echo 'Build and package the code using Maven'
             }
         }
 
-        stage('Test') {
+        stage('Unit and Integration Tests') {
             steps {
-                echo "Unit tests"
-                echo "Integration tests"
+                echo 'Run unit tests using JUnit'
+                echo 'Run integration tests using JUnit'
             }
         }
 
-        stage('Code Quality Check') {
+        stage('Code Analysis') {
             steps {
-                echo "Check the quality of the code"
+                echo 'Analyse the code using SonarQube'
             }
         }
 
-        stage('Deploy') {
+        stage('Security Scan') {
             steps {
-                echo "Deploy the application to a testing environment specified by the environment variable: ${TESTING_ENVIRONMENT}"
+                echo 'Scan the code for vulnerabilities using OWASP Dependency-Check'
             }
         }
 
-        stage('Approval') {
+        stage('Deploy to Staging') {
             steps {
-                echo "Waiting for approval..."
-                sleep time: 10, unit: 'SECONDS'
-                echo "Approval completed"
+                echo 'Deploy the application to the staging server using AWS EC2'
             }
         }
 
+        stage('Integration Tests on Staging') {
+            steps {
+                echo 'Run integration tests on the staging environment using JUnit'
+            }
+        }
+
+        stage('Deploy to Production') {
+            steps {
+                echo 'Deploy the application to the production server using AWS EC2'
+            }
+        }
     }
 }
